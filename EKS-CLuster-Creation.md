@@ -47,9 +47,9 @@ eksctl utils associate-iam-oidc-provider --region ap-south-1 --cluster cicd-clus
 
 ---
 
-### 3. **Create a Node Group**
+### 3. **Create a Public Node Group**
 
-Create a managed node group for the cluster using the following command:
+Create a managed public node group for the cluster using the following command:
 
 ```bash
 eksctl create nodegroup --cluster=cicd-cluster --region=ap-south-1 --name=cicd-ng-public1 --node-type=t3.medium --nodes=2 --nodes-min=2 --nodes-max=4 --node-volume-size=20 --ssh-access --ssh-public-key=ap-south-1 --managed --asg-access --external-dns-access --full-ecr-access --appmesh-access --alb-ingress-access
@@ -75,26 +75,58 @@ eksctl create nodegroup \
   --alb-ingress-access
 ```
 
+---
+
+### 4. **Create a Private Node Group**
+
+Create a managed private node group for the cluster using the following command:
+
+```bash
+eksctl create nodegroup --cluster=cicd-cluster --region=ap-south-1 --name=cicd-ng-private1 --node-type=t3.medium --nodes=2 --nodes-min=2 --nodes-max=4 --node-volume-size=20 --ssh-access --ssh-public-key=ap-south-1 --managed --asg-access --external-dns-access --full-ecr-access --appmesh-access --alb-ingress-access --node-private-networking
+```
+
+```bash
+eksctl create nodegroup \
+  --cluster=cicd-cluster \
+  --region=ap-south-1 \
+  --name=cicd-ng-public1 \
+  --node-type=t3.medium \
+  --nodes=2 \
+  --nodes-min=2 \
+  --nodes-max=4 \
+  --node-volume-size=20 \
+  --ssh-access \
+  --ssh-public-key=ap-south-1 \
+  --managed \
+  --asg-access \
+  --external-dns-access \
+  --full-ecr-access \
+  --appmesh-access \
+  --alb-ingress-access
+  --node-private-networking
+```
+
 #### 📝 Explanation of Parameters:
 
-| Parameter                | Description                                                                                 |
-|--------------------------|---------------------------------------------------------------------------------------------|
-| `--cluster`             | Name of the EKS cluster to attach the node group to (`cicd-cluster`).                       |
-| `--region`              | AWS region where the cluster and node group are created (`ap-south-1`).                     |
-| `--name`                | Name of the node group (`cicd-ng-public1`).                                                 |
-| `--node-type`           | EC2 instance type for the nodes (`t3.medium`).                                              |
-| `--nodes`               | Desired number of nodes in the group (2).                                                   |
-| `--nodes-min`           | Minimum number of nodes for auto-scaling (2).                                               |
-| `--nodes-max`           | Maximum number of nodes for auto-scaling (4).                                               |
-| `--node-volume-size`    | Size of the root volume attached to each node (20 GiB).                                      |
-| `--ssh-access`          | Enables SSH access to the nodes.                                                            |
-| `--ssh-public-key`      | Specifies the name of the SSH public key to use (`ap-south-1`).                             |
-| `--managed`             | Creates a managed node group (recommended for EKS).                                         |
-| `--asg-access`          | Grants permissions to the Auto Scaling Group associated with the nodes.                     |
-| `--external-dns-access` | Enables integration with ExternalDNS.                                                       |
-| `--full-ecr-access`     | Provides full access to Amazon Elastic Container Registry (ECR).                            |
-| `--appmesh-access`      | Enables integration with AWS App Mesh.                                                      |
-| `--alb-ingress-access`  | Grants permissions to manage Application Load Balancer (ALB) ingress controllers.           |
+| Parameter                    | Description                                                                                 |
+|------------------------------|---------------------------------------------------------------------------------------------|
+| `--cluster`                  | Name of the EKS cluster to attach the node group to (`cicd-cluster`).                       |
+| `--region`                   | AWS region where the cluster and node group are created (`ap-south-1`).                     |
+| `--name`                     | Name of the node group (`cicd-ng-public1`).                                                 |
+| `--node-type`                | EC2 instance type for the nodes (`t3.medium`).                                              |
+| `--nodes`                    | Desired number of nodes in the group (2).                                                   |
+| `--nodes-min`                | Minimum number of nodes for auto-scaling (2).                                               |
+| `--nodes-max`                | Maximum number of nodes for auto-scaling (4).                                               |
+| `--node-volume-size`         | Size of the root volume attached to each node (20 GiB).                                      |
+| `--ssh-access`               | Enables SSH access to the nodes.                                                            |
+| `--ssh-public-key`           | Specifies the name of the SSH public key to use (`ap-south-1`).                             |
+| `--managed`                  | Creates a managed node group (recommended for EKS).                                         |
+| `--asg-access`               | Grants permissions to the Auto Scaling Group associated with the nodes.                     |
+| `--external-dns-access`      | Enables integration with ExternalDNS.                                                       |
+| `--full-ecr-access`          | Provides full access to Amazon Elastic Container Registry (ECR).                            |
+| `--appmesh-access`           | Enables integration with AWS App Mesh.                                                      |
+| `--alb-ingress-access`       | Grants permissions to manage Application Load Balancer (ALB) ingress controllers.           |
+| `--node-private-networking`  | Creates a node group with private networking enabled, ensuring that the nodes in the group use private IPs           |
 
 ---
 
