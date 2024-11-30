@@ -132,22 +132,27 @@ eksctl create nodegroup \
 
 ## ⚡ Verify the Setup
 
-1. **Check Cluster Status**:
+1. Configure kubeconfig for kubectl
+   ```
+   aws eks --region ap-south-1 update-kubeconfig --name cicd-cluster
+   ```
+
+2. **Check Cluster Status**:
    ```bash
    eksctl get cluster --region=ap-south-1
    ```
 
-2. **Verify Node Group**:
+3. **Verify Node Group**:
    ```bash
    eksctl get nodegroup --cluster=cicd-cluster --region=ap-south-1
    ```
 
-3. **Access Nodes**:
+4. **Access Nodes**:
    Use the SSH key (`ap-south-1`) to connect to a node for debugging or verification:
    ```bash
    ssh -i /path/to/ap-south-1.pem ec2-user@<node-public-ip>
    ```
-
+   
 ---
 
 ## 🎉 Congratulations
